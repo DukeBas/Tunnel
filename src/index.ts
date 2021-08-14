@@ -1,4 +1,3 @@
-import "./sidebar";
 import "./sketch";
 import "./style.scss";
 
