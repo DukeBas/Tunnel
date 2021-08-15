@@ -1,6 +1,10 @@
 import p5 from 'p5';
 
-const maxNoise = 5;
+const maxNoise = 7;
+const offsetStrength = 0.2;
+const noiseStepDivisor = 30;
+
+const maxDrawLoops = 1000;
 
 type point = {
   x: number,
@@ -17,12 +21,18 @@ class Ring {
 
   offsets: number[] = [];
 
-  constructor(sketchRef: p5, radius = 100, centerX = innerWidth / 2, centerY = innerHeight / 2) {
+  timesDrawn = 0;
+
+  constructor(sketchRef: p5,
+    serial = 0, // how many rings came before, used for noise offsets
+    radius = 5,
+    centerX = innerWidth / 2,
+    centerY = innerHeight / 2) {
     this.p = sketchRef;
     this.r = radius;
     this.x = centerX;
     this.y = centerY;
-    this.offsets = this.generateOffsets(51);
+    this.offsets = this.generateOffsets(51, serial);
   }
 
   draw(p: p5 = this.p) { // p is a reference to the sketch (canvas)
@@ -39,6 +49,8 @@ class Ring {
     //   p.curveVertex(point.x, point.y)
     // }
     p.endShape();
+
+    this.timesDrawn++;
   }
 
   changeSize(diff = 1) {
@@ -51,13 +63,18 @@ class Ring {
 
     for (let i = 0; i < amount; i++) {
       const xoff = this.p.map(Math.cos(i * arcPerPoint), -1, 1, 0, maxNoise) +
-        this.p.map(Math.cos(noiseOffset), -1, 1, 0, maxNoise);
+        this.p.map(Math.cos(noiseOffset / noiseStepDivisor), -1, 1, 0, maxNoise);
       const yoff = this.p.map(Math.sin(i * arcPerPoint), -1, 1, 0, maxNoise) +
-        this.p.map(Math.sin(noiseOffset), -1, 1, 0, maxNoise);
-      offsets.push(this.p.map(this.p.noise(xoff, yoff), 0, 1, 100, 200));
+        this.p.map(Math.sin(noiseOffset / noiseStepDivisor), -1, 1, 0, maxNoise);
+      offsets.push(this.p.map(this.p.noise(xoff, yoff), 0, 1, -1, 1));
     }
 
     return offsets;
+  }
+
+  // determines
+  get valid () {
+    return this.timesDrawn < maxDrawLoops;
   }
 }
 
@@ -67,7 +84,7 @@ function calculatePoint(centerX: number,
   angle: number,
   offset = 0
 ): point {
-  const r = radius + offset;
+  const r = radius + offsetStrength * radius * offset;
   return {
     x: centerX + Math.cos(angle) * r,
     y: centerY + Math.sin(angle) * r

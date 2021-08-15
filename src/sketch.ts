@@ -19,7 +19,7 @@ const sketch = (p: p5) => {
     p.strokeWeight(2);
     p.stroke(255);
     p.noFill();
-    
+
     rings.push(new Ring(p));
   };
 
@@ -32,8 +32,15 @@ const sketch = (p: p5) => {
 
     rings.forEach((r) => {
       r.draw();
-      // r.changeSize();
+      r.changeSize();
+      if (!r.valid) {
+        rings.splice(rings.indexOf(r), 1)
+      }
     });
+
+    if (p.frameCount % 30 === 0) {
+      rings.push(new Ring(p, rings.length))
+    }
   }
 
   // set functions as global functions
