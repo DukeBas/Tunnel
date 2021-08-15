@@ -20,7 +20,7 @@ const sketch = (p: p5) => {
     p.stroke(255);
     p.noFill();
     
-    rings.push(new Ring())
+    rings.push(new Ring());
   };
 
   p.windowResized = () => {
@@ -32,7 +32,7 @@ const sketch = (p: p5) => {
 
     rings.forEach((r) => {
       r.draw(p);
-      r.changeSize();
+      // r.changeSize();
     });
   }
 
