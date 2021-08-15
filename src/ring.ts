@@ -4,7 +4,7 @@ const maxNoise = 10;
 const offsetStrength = 0.3;
 const noiseStepDivisor = 25;
 
-const maxDrawLoops = 1000;
+const maxDrawLoops = 500;
 
 type point = {
   x: number,
@@ -73,7 +73,7 @@ class Ring {
     return offsets;
   }
 
-  // determines
+  // determines if ring is still valid (by the number of times it has been drawn)
   get valid() {
     return this.timesDrawn < maxDrawLoops;
   }

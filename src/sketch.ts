@@ -1,6 +1,8 @@
 import p5 from 'p5';
 import Ring from './ring';
 
+const newRingsEveryXFrames = 20;
+
 const sketch = (p: p5) => {
   const rings: Ring[] = [];
 
@@ -19,8 +21,6 @@ const sketch = (p: p5) => {
     p.strokeWeight(2);
     p.stroke(255);
     p.noFill();
-
-    rings.push(new Ring(p));
   };
 
   p.windowResized = () => {
@@ -32,14 +32,21 @@ const sketch = (p: p5) => {
 
     rings.forEach((r) => {
       r.draw();
-      r.changeSize(Math.pow(r.timesDrawn,2) /5000);
+      r.changeSize(Math.pow(r.timesDrawn, 2) / 5000);
       if (!r.valid) {
-        rings.splice(rings.indexOf(r), 1)
+        rings.splice(rings.indexOf(r), 1);
       }
     });
 
-    if (p.frameCount % 20 === 0) {
-      rings.push(new Ring(p, rings.length));
+    if (p.frameCount % newRingsEveryXFrames === 0) {
+      rings.push(
+        new Ring(
+          p,
+          rings.length,
+          5,
+          p.width / 2 + p.width / 8 * Math.cos(p.frameCount / newRingsEveryXFrames / 10),
+          p.height / 2 + p.height / 8 * Math.sin(p.frameCount / newRingsEveryXFrames / 10),
+        ));
     }
   }
 
