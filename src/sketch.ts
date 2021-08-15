@@ -32,13 +32,13 @@ const sketch = (p: p5) => {
 
     rings.forEach((r) => {
       r.draw();
-      r.changeSize();
+      r.changeSize(Math.pow(r.timesDrawn,2) /5000);
       if (!r.valid) {
         rings.splice(rings.indexOf(r), 1)
       }
     });
 
-    if (p.frameCount % 30 === 0) {
+    if (p.frameCount % 20 === 0) {
       rings.push(new Ring(p, rings.length));
     }
   }

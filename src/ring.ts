@@ -1,7 +1,7 @@
 import p5 from 'p5';
 
-const maxNoise = 7;
-const offsetStrength = 0.2;
+const maxNoise = 10;
+const offsetStrength = 0.3;
 const noiseStepDivisor = 25;
 
 const maxDrawLoops = 1000;
@@ -38,7 +38,8 @@ class Ring {
   draw(p: p5 = this.p) { // p is a reference to the sketch (canvas)
     // p.ellipse(this.x, this.y, this.r);
     
-    p.stroke(255, this.timesDrawn/3)
+    p.stroke(255, this.r);
+    p.strokeWeight(this.r/200);
 
 
     // generate circle from points
