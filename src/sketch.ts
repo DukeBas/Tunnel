@@ -28,7 +28,7 @@ const sketch = (p: p5) => {
   };
 
   p.draw = () => {
-    p.background(20);
+    p.background(0);
 
     rings.forEach((r) => {
       r.draw();
@@ -39,7 +39,7 @@ const sketch = (p: p5) => {
     });
 
     if (p.frameCount % 30 === 0) {
-      rings.push(new Ring(p, rings.length))
+      rings.push(new Ring(p, rings.length));
     }
   }
 

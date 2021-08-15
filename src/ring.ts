@@ -2,7 +2,7 @@ import p5 from 'p5';
 
 const maxNoise = 7;
 const offsetStrength = 0.2;
-const noiseStepDivisor = 30;
+const noiseStepDivisor = 25;
 
 const maxDrawLoops = 1000;
 
@@ -37,6 +37,10 @@ class Ring {
 
   draw(p: p5 = this.p) { // p is a reference to the sketch (canvas)
     // p.ellipse(this.x, this.y, this.r);
+    
+    p.stroke(255, this.timesDrawn/3)
+
+
     // generate circle from points
     p.beginShape();
     const arcPerPoint = Math.PI * 2 / (this.offsets.length - 1);
@@ -44,10 +48,6 @@ class Ring {
       const point = calculatePoint(this.x, this.y, this.r, i * arcPerPoint, this.offsets[i]);
       p.vertex(point.x, point.y)
     }
-    // for (let i = -1; i <= 11; i++) {
-    //   const point = calculatePoint(this.x, this.y, this.r, i * (Math.PI / 5));
-    //   p.curveVertex(point.x, point.y)
-    // }
     p.endShape();
 
     this.timesDrawn++;
@@ -73,7 +73,7 @@ class Ring {
   }
 
   // determines
-  get valid () {
+  get valid() {
     return this.timesDrawn < maxDrawLoops;
   }
 }
